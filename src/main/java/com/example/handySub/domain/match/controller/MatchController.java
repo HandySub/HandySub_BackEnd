@@ -32,4 +32,15 @@ public class MatchController {
         matchService.test();
     }
 
+    @ResponseBody
+    @GetMapping("/non/{matchId}")
+    public BaseResponse<MatchDto.GetNonMatchInfo> getNonMatchData(@PathVariable Long matchId) throws BaseException{
+        try{
+            MatchDto.GetNonMatchInfo getNonMatchInfo = matchService.getNonMatchInfo(matchId);
+            return new BaseResponse<>(getNonMatchInfo);
+        }catch (Exception e) {
+            return new BaseResponse<>(null);
+        }
+    }
+
 }

@@ -14,13 +14,19 @@ public class MatchDto {
     @NoArgsConstructor
     public static class GetNonMatch {
         private Long matchId;
-        private Long handicapped;
-        private Long nonHandicapped;
-        private Date startedAt;
-        private Date finishedAt;
-        private Integer requiredTime;
         private Long startStation;
         private Long finishStation;
+    }
+
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class GetNonMatchInfo {
+        private Long matchId;
+        private Long startStation;
+        private Long finishStation;
+        private String nickname;
     }
 
 }
