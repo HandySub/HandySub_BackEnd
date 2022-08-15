@@ -63,9 +63,18 @@ public class MatchService {
             getNonMatch.setMatchId(i.getMatchId());
             getNonMatch.setStartStation(i.getStartStation());
             getNonMatch.setFinishStation(i.getFinishStation());
-            getNonMatch.setHandicapped(i.getHandicapped());
             getNonMatchList.add(getNonMatch);
         }
         return getNonMatchList;
+    }
+
+    public MatchDto.GetNonMatchInfo getNonMatchInfo(Long matchId) throws BaseException {
+        MatchCollections matchCollections = matchRepository.findByMatchId(matchId);
+        MatchDto.GetNonMatchInfo getNonMatchInfo = new MatchDto.GetNonMatchInfo();
+        getNonMatchInfo.setMatchId(matchCollections.getMatchId());
+        getNonMatchInfo.setStartStation(matchCollections.getStartStation());
+        getNonMatchInfo.setFinishStation(matchCollections.getFinishStation());
+//        getNonMatchInfo.setNickname();
+        return getNonMatchInfo;
     }
 }

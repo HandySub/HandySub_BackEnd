@@ -11,4 +11,5 @@ import java.util.List;
 public interface MatchRepository extends MongoRepository<MatchCollections, Long> {
     List<MatchCollections> findAllByStartStation(Long startStation);
     List<MatchCollections> findAllByFinishStation(Long finishStation);
+    MatchCollections findByMatchId(Long matchId);
 }
