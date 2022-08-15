@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -13,34 +14,33 @@ import java.sql.Date;
 @Document(collection = "matchings")
 @Getter
 @Setter
-@NoArgsConstructor
 public class MatchCollections {
     @Id
-    private ObjectId matchId;
+    private Long matchId;
 
-    private ObjectId handicapped;
+    private Long handicapped;
 
-    private ObjectId nonHandicapped;
+    private Long nonHandicapped;
 
-    private Date startedAt;
+    private Long startedAt;
 
-    private Date finishedAt;
+    private Long finishedAt;
 
     private Integer requiredTime;
 
-    private Integer startStation;
+    private Long startStation;
 
-    private Integer finishStation;
+    private Long finishStation;
 
-    @Builder
-    public MatchCollections(ObjectId handicapped, ObjectId nonHandicapped, Date startedAt,
-                            Date finishedAt, Integer requiredTime, Integer startStation, Integer finishStation){
-        this.handicapped = handicapped;
-        this.nonHandicapped = nonHandicapped;
-        this.startedAt = startedAt;
-        this.finishedAt = finishedAt;
-        this.requiredTime = requiredTime;
-        this.startStation = startStation;
-        this.finishStation = finishStation;
-    }
+//    @Builder
+//    public MatchCollections(Long handicapped, Long nonHandicapped, Date startedAt,
+//                            Date finishedAt, Integer requiredTime, Integer startStation, Integer finishStation){
+//        this.handicapped = handicapped;
+//        this.nonHandicapped = nonHandicapped;
+//        this.startedAt = startedAt;
+//        this.finishedAt = finishedAt;
+//        this.requiredTime = requiredTime;
+//        this.startStation = startStation;
+//        this.finishStation = finishStation;
+//    }
 }
