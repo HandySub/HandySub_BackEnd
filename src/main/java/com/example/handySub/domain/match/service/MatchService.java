@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -17,17 +19,30 @@ public class MatchService {
     @Autowired
     MatchRepository matchRepository;
 
+    public List<MatchDto.GetAllResponse> getAllMatchByHandicappedId(Long handicappedId){
+        List<MatchCollections> allMatchByHandicappedId=this.matchRepository.findAllMatchByHandicappedId(handicappedId);
+        return this.convertNestedStructure(allMatchByHandicappedId);
+    }
+    private List<MatchDto.GetAllResponse> convertNestedStructure(List<MatchCollections> matches) {
+        List<MatchDto.GetAllResponse> result = new ArrayList<>();
+        Map<Long, MatchDto.GetAllResponse> map = new HashMap<>();
+        matches.stream().forEach(c -> {
+            MatchDto.GetAllResponse getResponse = MatchDto.GetAllResponse.convertMatchToDto(c);
+            map.put(getResponse.getMatchId(), getResponse);
+        });
+        return result;
+    }
+
     public void test(){
         MatchCollections matchCollections = new MatchCollections();
         matchCollections.setMatchId(1L);
-        matchCollections.setHandicapped(1L);
-        matchCollections.setNonHandicapped(2L);
+        matchCollections.setHandicappedId(1L);
+        matchCollections.setNonHandicappedId(2L);
         matchCollections.setStartedAt(1L);
         matchCollections.setFinishedAt(1L);
         matchCollections.setRequiredTime(1);
         matchCollections.setStartStation(1L);
         matchCollections.setFinishStation(2L);
-
         matchRepository.save(matchCollections);
     }
 
@@ -78,3 +93,5 @@ public class MatchService {
         return getNonMatchInfo;
     }
 }
+
+
