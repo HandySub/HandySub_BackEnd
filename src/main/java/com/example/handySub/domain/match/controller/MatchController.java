@@ -1,19 +1,30 @@
-package com.example.handySub.domain.match.controller;
-
+import com.example.handySub.domain.match.constant.MatchConstants;
 import com.example.handySub.domain.match.dto.MatchDto;
 import com.example.handySub.domain.match.service.MatchService;
+import com.example.handySub.global.dto.ResponseDto;
 import com.example.handySub.util.BaseException;
 import com.example.handySub.util.BaseResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/match")
+@RequestMapping("api/v1/match")
+@Api(tags="Match API")
 public class MatchController {
-    @Autowired
-    MatchService matchService;
+
+    private final MatchService matchService;
 
     @ResponseBody
     @GetMapping("/non/list/{startStation}/{finishStation}")
@@ -43,4 +54,16 @@ public class MatchController {
         }
     }
 
+    @ApiOperation(value="매칭 신청 목록 전체 조회", notes="장애인의 매칭 신청 목록을 조회합니다")
+    @GetMapping("/{handicappedId}")
+    public ResponseEntity<ResponseDto<List<MatchDto.GetAllResponse>>> getAllmatch(@PathVariable Long handicappedId){
+        return ResponseEntity.ok(ResponseDto.create(MatchConstants.EMatchResponseMessage.GET_ALL_MATCH_SUCCESS.getMessage(),this.matchService.getAllMatchByHandicappedId(handicappedId)));
+    }
+
+//    @ApiOperation(value="매칭 삭제", notes="매칭을 삭제합니다")
+//    @DeleteMapping
+//    public ResponseEntity<ResponseDto> deleteMatch(@Valid @RequestBody MatchDto.DeleteMatch deleteMatch){
+//        this.matchService.deleteMatch(deleteMatch);
+//        return ResponseEntity.ok(ResponseDto.create(MatchConstants.EMatchResponseMessage.DELETE_MATCH_SUCCESS.getMessage()));
+//    }
 }
