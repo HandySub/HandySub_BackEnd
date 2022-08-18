@@ -33,8 +33,18 @@ dependencies {
 	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-mongodb:${queryDslVersion}"
 	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation 'org.mongodb:mongo-java-driver:3.12.8'
+	implementation 'org.mongodb:mongodb-driver-sync:4.6.1'
+	implementation 'org.mongodb:mongodb-driver-core:4.6.1'
+	implementation 'org.mongodb.morphia:morphia:1.2.2'
+
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
+
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
 
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -54,7 +64,8 @@ tasks.named('test') {
 def querydslDir = "$buildDir/generated/querydsl"
 
 querydsl {
-	jpa = true
+	springDataMongo = true
+	library = "com.querydsl:querydsl-apt"
 	querydslSourcesDir = querydslDir
 }
 
