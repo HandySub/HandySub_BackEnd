@@ -4,7 +4,6 @@ import com.example.handySub.domain.match.collection.MatchCollections;
 import com.example.handySub.domain.match.dto.MatchDto;
 import com.example.handySub.domain.match.repository.MatchRepository;
 import lombok.RequiredArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MatchServiceImpl implements MatchService {
 
-    private MatchRepository matchRepository;
+    private final MatchRepository matchRepository;
 
     @Override
     public List<MatchDto.GetAllResponse> getAllMatchByHandicappedId(Long handicappedId){
@@ -38,9 +37,24 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public void createMatch(MatchDto.CreateRequest createRequest){
-        MatchCollections matchCollections=createRequest.toEntity();
-        this.matchRepository.save(matchCollections);
+    public void createMatch(MatchDto.GetAllResponse getAllResponse){
+        MatchCollections matchCollections=getAllResponse.toEntity();
+        System.out.println(matchCollections.toString());
+        matchRepository.save(matchCollections);
     }
+
+    @Override
+    public void test(){
+        MatchCollections matchCollections = new MatchCollections();
+        matchCollections.set_id("ss");
+        matchCollections.setHandicappedId(1L);
+        matchCollections.setNonHandicappedId(2L);
+        matchCollections.setStartedAt(1L);
+        matchCollections.setFinishedAt(1L);
+        matchCollections.setRequiredTime(1);
+        matchCollections.setStartStation(1L);
+        matchCollections.setFinishStation(2L);
+        matchRepository.save(matchCollections);
+}
 
 }

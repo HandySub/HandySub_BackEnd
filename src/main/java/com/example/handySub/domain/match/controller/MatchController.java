@@ -36,12 +36,12 @@ public class MatchController {
 //        }
 //    }
 //
-//    // matchController에 대한 test document 생성(서버 구현용)
-//    @GetMapping(value = "/test")
-//    public void test() {
-//        matchService.test();
-//    }
-//
+    // matchController에 대한 test document 생성(서버 구현용)
+    @GetMapping(value = "/test")
+    public void test() {
+        matchService.test();
+    }
+
 //    @ResponseBody
 //    @GetMapping("/non/{_id}")
 //    public BaseResponse<MatchDto.GetNonMatchInfo> getNonMatchData(@PathVariable Long _id) throws BaseException{
@@ -61,9 +61,9 @@ public class MatchController {
 
     @ApiOperation(value="매칭 신청", notes="장애인이 매칭을 신청합니다.")
     @PostMapping
-    public ResponseEntity<ResponseDto> createMatch(@Valid @ModelAttribute MatchDto.CreateRequest createRequest){
-        System.out.println(createRequest.toEntity().get_id());
-        this.matchService.createMatch(createRequest);
+    public ResponseEntity<ResponseDto> createMatch(@Valid @ModelAttribute MatchDto.GetAllResponse getAllResponse){
+        System.out.println(getAllResponse.toEntity().get_id());
+        this.matchService.createMatch(getAllResponse);
         return ResponseEntity.ok(ResponseDto.create(MatchConstants.EMatchResponseMessage.CREATE_MATCH_SUCCESS.getMessage()));
     }
 
