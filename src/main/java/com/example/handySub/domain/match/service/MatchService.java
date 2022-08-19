@@ -13,85 +13,70 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
-@Component
-public class MatchService {
-    @Autowired
-    MatchRepository matchRepository;
+public interface MatchService {
 
-    public List<MatchDto.GetAllResponse> getAllMatchByHandicappedId(Long handicappedId){
-        List<MatchCollections> allMatchByHandicappedId=this.matchRepository.findAllMatchByHandicappedId(handicappedId);
-        return this.convertNestedStructure(allMatchByHandicappedId);
-    }
-    private List<MatchDto.GetAllResponse> convertNestedStructure(List<MatchCollections> matches) {
-        List<MatchDto.GetAllResponse> result = new ArrayList<>();
-        Map<Long, MatchDto.GetAllResponse> map = new HashMap<>();
-        matches.stream().forEach(c -> {
-            MatchDto.GetAllResponse getResponse = MatchDto.GetAllResponse.convertMatchToDto(c);
-            map.put(getResponse.getMatchId(), getResponse);
-        });
-        return result;
-    }
+    List<MatchDto.GetAllResponse> getAllMatchByHandicappedId(Long handicappedId);
+    void createMatch(MatchDto.CreateRequest createRequest);
 
-    public void test(){
-        MatchCollections matchCollections = new MatchCollections();
-        matchCollections.setMatchId(1L);
-        matchCollections.setHandicappedId(1L);
-        matchCollections.setNonHandicappedId(2L);
-        matchCollections.setStartedAt(1L);
-        matchCollections.setFinishedAt(1L);
-        matchCollections.setRequiredTime(1);
-        matchCollections.setStartStation(1L);
-        matchCollections.setFinishStation(2L);
-        matchRepository.save(matchCollections);
-    }
-
-    public List<MatchDto.GetNonMatch> getNonMatchList(Long startStation, Long finishStation) throws BaseException {
-        List<MatchCollections> matchCollectionsList = new ArrayList<MatchCollections>();
-        if (startStation.equals(0L) & finishStation.equals(0L)){
-            List<MatchCollections> temp = matchRepository.findAll();
-            for(MatchCollections i : temp){
-                matchCollectionsList.add(i);
-            }
-        } else if(startStation.equals(0L)){
-            List<MatchCollections> temp = matchRepository.findAllByFinishStation(finishStation);
-            for(MatchCollections i : temp){
-                matchCollectionsList.add(i);
-            }
-        } else if(finishStation.equals(0L)){
-            List<MatchCollections> temp = matchRepository.findAllByStartStation(startStation);
-            for(MatchCollections i : temp){
-                matchCollectionsList.add(i);
-            }
-        } else{
-            List<MatchCollections> temp = matchRepository.findAllByStartStation(startStation);
-            for(MatchCollections i : temp){
-                Long finish = i.getFinishStation();
-                if (finish.equals(finishStation)){
-                    matchCollectionsList.add(i);
-                }
-            }
-        }
-        List<MatchDto.GetNonMatch> getNonMatchList = new ArrayList<>();
-        for(MatchCollections i : matchCollectionsList){
-            MatchDto.GetNonMatch getNonMatch = new MatchDto.GetNonMatch();
-            getNonMatch.setMatchId(i.getMatchId());
-            getNonMatch.setStartStation(i.getStartStation());
-            getNonMatch.setFinishStation(i.getFinishStation());
-            getNonMatchList.add(getNonMatch);
-        }
-        return getNonMatchList;
-    }
-
-    public MatchDto.GetNonMatchInfo getNonMatchInfo(Long matchId) throws BaseException {
-        MatchCollections matchCollections = matchRepository.findByMatchId(matchId);
-        MatchDto.GetNonMatchInfo getNonMatchInfo = new MatchDto.GetNonMatchInfo();
-        getNonMatchInfo.setMatchId(matchCollections.getMatchId());
-        getNonMatchInfo.setStartStation(matchCollections.getStartStation());
-        getNonMatchInfo.setFinishStation(matchCollections.getFinishStation());
-//        getNonMatchInfo.setNickname();
-        return getNonMatchInfo;
-    }
+//    public void test(){
+//        MatchCollections matchCollections = new MatchCollections();
+//        matchCollections.set_id(1L);
+//        matchCollections.setHandicappedId(1L);
+//        matchCollections.setNonHandicappedId(2L);
+//        matchCollections.setStartedAt(1L);
+//        matchCollections.setFinishedAt(1L);
+//        matchCollections.setRequiredTime(1);
+//        matchCollections.setStartStation(1L);
+//        matchCollections.setFinishStation(2L);
+//        matchRepository.save(matchCollections);
+//    }
+//
+//    public List<MatchDto.GetNonMatch> getNonMatchList(Long startStation, Long finishStation) throws BaseException {
+//        List<MatchCollections> matchCollectionsList = new ArrayList<MatchCollections>();
+//        if (startStation.equals(0L) & finishStation.equals(0L)){
+//            List<MatchCollections> temp = matchRepository.findAll();
+//            for(MatchCollections i : temp){
+//                matchCollectionsList.add(i);
+//            }
+//        } else if(startStation.equals(0L)){
+//            List<MatchCollections> temp = matchRepository.findAllByFinishStation(finishStation);
+//            for(MatchCollections i : temp){
+//                matchCollectionsList.add(i);
+//            }
+//        } else if(finishStation.equals(0L)){
+//            List<MatchCollections> temp = matchRepository.findAllByStartStation(startStation);
+//            for(MatchCollections i : temp){
+//                matchCollectionsList.add(i);
+//            }
+//        } else{
+//            List<MatchCollections> temp = matchRepository.findAllByStartStation(startStation);
+//            for(MatchCollections i : temp){
+//                Long finish = i.getFinishStation();
+//                if (finish.equals(finishStation)){
+//                    matchCollectionsList.add(i);
+//                }
+//            }
+//        }
+//        List<MatchDto.GetNonMatch> getNonMatchList = new ArrayList<>();
+//        for(MatchCollections i : matchCollectionsList){
+//            MatchDto.GetNonMatch getNonMatch = new MatchDto.GetNonMatch();
+//            getNonMatch.set_id(i.get_id());
+//            getNonMatch.setStartStation(i.getStartStation());
+//            getNonMatch.setFinishStation(i.getFinishStation());
+//            getNonMatchList.add(getNonMatch);
+//        }
+//        return getNonMatchList;
+//    }
+//
+//    public MatchDto.GetNonMatchInfo getNonMatchInfo(Long _id) throws BaseException {
+//        MatchCollections matchCollections = matchRepository.findBy_id(_id);
+//        MatchDto.GetNonMatchInfo getNonMatchInfo = new MatchDto.GetNonMatchInfo();
+//        getNonMatchInfo.set_id(matchCollections.get_id());
+//        getNonMatchInfo.setStartStation(matchCollections.getStartStation());
+//        getNonMatchInfo.setFinishStation(matchCollections.getFinishStation());
+////        getNonMatchInfo.setNickname();
+//        return getNonMatchInfo;
+//    }
 }
 
 
