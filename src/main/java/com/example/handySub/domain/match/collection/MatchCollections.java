@@ -11,34 +11,26 @@ import java.sql.Date;
 
 @Getter
 @Setter
-@Entity
+@Document(collection="match")
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @ToString
 public class MatchCollections {
 
-    @Id @Field
-    private Long matchId;
-
-    @Field
+    @Id
+    private String _id;
     private Long handicappedId;
-    @Field
     private Long nonHandicappedId;
-    @Field
     private Long startedAt;
-    @Field
     private Long finishedAt;
-    @Field
     private Integer requiredTime;
-    @Field
     private Long startStation;
-    @Field
     private Long finishStation;
 
     @Builder
-    public MatchCollections(Long handicappedId, Long nonHandicappedId, Long startedAt,
+    public MatchCollections(String _id, Long handicappedId, Long nonHandicappedId, Long startedAt,
                             Long finishedAt, Integer requiredTime, Long startStation, Long finishStation){
+        this._id=_id;
         this.handicappedId = handicappedId;
         this.nonHandicappedId = nonHandicappedId;
         this.startedAt = startedAt;

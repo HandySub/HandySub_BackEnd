@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface MatchRepositoryCustom {
 
-    List<MatchCollections> findAllMatchByHandicappedId(Long handicappedId);
+
+
 }
