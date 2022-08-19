@@ -1,35 +1,14 @@
 package com.example.handySub.domain.match.service;
 
-import com.example.handySub.domain.match.collection.MatchCollections;
 import com.example.handySub.domain.match.dto.MatchDto;
-import com.example.handySub.domain.match.repository.MatchRepository;
-import com.example.handySub.util.BaseException;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public interface MatchService {
 
     List<MatchDto.GetAllResponse> getAllMatchByHandicappedId(Long handicappedId);
-    void createMatch(MatchDto.CreateRequest createRequest);
-
-//    public void test(){
-//        MatchCollections matchCollections = new MatchCollections();
-//        matchCollections.set_id(1L);
-//        matchCollections.setHandicappedId(1L);
-//        matchCollections.setNonHandicappedId(2L);
-//        matchCollections.setStartedAt(1L);
-//        matchCollections.setFinishedAt(1L);
-//        matchCollections.setRequiredTime(1);
-//        matchCollections.setStartStation(1L);
-//        matchCollections.setFinishStation(2L);
-//        matchRepository.save(matchCollections);
-//    }
+    void createMatch(MatchDto.GetAllResponse getAllResponse);
+    void test();
 //
 //    public List<MatchDto.GetNonMatch> getNonMatchList(Long startStation, Long finishStation) throws BaseException {
 //        List<MatchCollections> matchCollectionsList = new ArrayList<MatchCollections>();

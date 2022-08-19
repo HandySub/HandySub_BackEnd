@@ -1,7 +1,6 @@
 package com.example.handySub.domain.match.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.*;
 import com.example.handySub.domain.match.collection.MatchCollections;
 import com.querydsl.core.annotations.QueryProjection;
@@ -10,8 +9,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import org.bson.types.ObjectId;
-import org.springframework.data.jpa.repository.Query;
 
 public abstract class MatchDto {
 

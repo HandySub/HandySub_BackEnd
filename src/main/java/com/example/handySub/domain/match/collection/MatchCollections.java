@@ -1,13 +1,8 @@
 package com.example.handySub.domain.match.collection;
 
 import lombok.*;
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.data.mongodb.core.mapping.Field;
-
-import javax.persistence.*;
-import java.sql.Date;
 
 @Getter
 @Setter
