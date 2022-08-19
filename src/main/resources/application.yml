@@ -1,12 +1,12 @@
 spring:
   data:
     mongodb:
-      authentication-database: admin
-      username: minsu
-      password: minsu
+      authentication-database:
+      username:
+      password:
       host: localhost
       port: 27017
-      database: handySub
+      database: handysub
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
@@ -17,7 +17,6 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        #        show_sql: true
         format_sql: true
 
 
