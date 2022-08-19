@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,21 +14,25 @@ import java.util.List;
 public class UserRepository implements UserRepositoryImpli {
     @Autowired
     MongoTemplate mongoTemplate;
-    String COLLECTION_NAME = "user"; //컬렉션(테이블) 이름 : user
+    String COLLECTION_NAME = "users"; //컬렉션(테이블) 이름 : user
 
-    @Override //중복 회원 방지 추가해야 됨.
+    @Override
     public void userInsert(UserDto userDto){
         mongoTemplate.insert(userDto, COLLECTION_NAME);
     }
 
     @Override
-    public void userUpdate(UserDto userDto){
-
+    public void userInfoUpdate(String email, String newinfo){
+        Query query = new Query(new Criteria("email").is(email)); //값 찾기
+        Update update = new Update();
+        update.set("info",newinfo);
+        mongoTemplate.updateFirst(query,update,UserDto.class); //수정
     }
 
     @Override
-    public void userDelete(UserDto userDto){
-
+    public void userDelete(String email){
+        Query query = new Query(new Criteria("email").is(email));
+        mongoTemplate.remove(query);
     }
 
     @Override

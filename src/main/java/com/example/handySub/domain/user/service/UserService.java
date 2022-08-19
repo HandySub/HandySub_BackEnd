@@ -16,13 +16,13 @@ public class UserService implements UserServiceImpli {
     }
 
     @Override
-    public void userUpdate(UserDto userDto){
-        userRepository.userUpdate(userDto);
+    public void userInfoUpdate(String email, String newinfo){
+        userRepository.userInfoUpdate(email, newinfo);
     }
 
     @Override
-    public void userDelete(UserDto userDto){
-        userRepository.userDelete(userDto);
+    public void userDelete(String email){
+        userRepository.userDelete(email);
     }
 
     @Override
