@@ -19,18 +19,20 @@ public class MatchCollections {
     private Long startedAt;
     private Long finishedAt;
     private Integer requiredTime;
+    private String nonContents;
     private StationCollections startStation;
     private StationCollections finishStation;
 
     @Builder
     public MatchCollections(String _id, Long handicappedId, Long nonHandicappedId, Long startedAt,
-                            Long finishedAt, Integer requiredTime, StationCollections startStation, StationCollections finishStation){
+                            Long finishedAt, Integer requiredTime, String nonContents, StationCollections startStation, StationCollections finishStation){
         this._id=_id;
         this.handicappedId = handicappedId;
         this.nonHandicappedId = nonHandicappedId;
         this.startedAt = startedAt;
         this.finishedAt = finishedAt;
         this.requiredTime = requiredTime;
+        this.nonContents = nonContents;
         this.startStation = startStation;
         this.finishStation = finishStation;
     }

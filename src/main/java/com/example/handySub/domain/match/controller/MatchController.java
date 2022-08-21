@@ -23,7 +23,7 @@ public class MatchController {
 
     private final MatchService matchService;
 
-    @ApiOperation(value="매칭 신청 대기 목록 전체 조회", notes="비장애인의 매칭 신청 대기 목록을 조회합니다")
+    @ApiOperation(value="매칭 신청 대기 목록 전체 조회", notes="비장애인의 매칭 신청 대기 목록을 조회합니다.")
     @GetMapping("/non/{startStation}/{finishStation}")
     public ResponseEntity<ResponseDto<List<MatchDto.GetAllNonMatch>>> getAllNonMatch(@PathVariable Long startStation, @PathVariable Long finishStation) {
             return ResponseEntity.ok(ResponseDto.create(MatchConstants.EMatchResponseMessage.GET_ALL_NON_MATCH_SUCCESS.getMessage(), this.matchService.getAllNonMatchByStation(startStation, finishStation)));
@@ -35,12 +35,20 @@ public class MatchController {
         matchService.test();
     }
 
-    @ApiOperation(value="매칭 신청 대기 목록 개별 조회", notes="비장애인의 매칭 신청 대기 목록을 개별 조회합니다")
+    @ApiOperation(value="매칭 신청 대기 목록 개별 조회", notes="비장애인의 매칭 신청 대기 목록을 개별 조회합니다.")
     @GetMapping("/non/{_id}")
     public ResponseEntity<ResponseDto<MatchDto.GetNonMatch>> getNonMatch(@PathVariable String _id) {
         return ResponseEntity.ok(ResponseDto.create(MatchConstants.EMatchResponseMessage.GET_NON_MATCH_SUCCESS.getMessage(), this.matchService.getNonMatchByID(_id)));
 
     }
+
+    @ApiOperation(value="매칭 신청", notes="비장애인이 매칭을 신청합니다.")
+    @PatchMapping("/non/apply")
+    public ResponseEntity<ResponseDto> patchNonMatchApply(@RequestBody MatchDto.GetNonMatchApply getNonMatchApply) {
+        this.matchService.patchNonMatchApply(getNonMatchApply);
+        return ResponseEntity.ok(ResponseDto.create(MatchConstants.EMatchResponseMessage.PATCH_NON_MATCH_APPLY_SUCCESS.getMessage()));
+    }
+
 
     @ApiOperation(value="매칭 신청 목록 전체 조회", notes="장애인의 매칭 신청 목록을 조회합니다")
     @GetMapping("/{handicappedId}")
@@ -62,5 +70,7 @@ public class MatchController {
 //        this.matchService.deleteMatch(deleteMatch);
 //        return ResponseEntity.ok(ResponseDto.create(MatchConstants.EMatchResponseMessage.DELETE_MATCH_SUCCESS.getMessage()));
 //    }
+
+
 
 }
