@@ -4,15 +4,13 @@ import com.example.handySub.domain.match.constant.MatchConstants;
 import com.example.handySub.domain.match.dto.MatchDto;
 import com.example.handySub.domain.match.service.MatchService;
 import com.example.handySub.global.dto.ResponseDto;
-import com.example.handySub.util.BaseException;
-import com.example.handySub.util.BaseResponse;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 
 import javax.validation.Valid;
 import java.util.List;
@@ -25,33 +23,24 @@ public class MatchController {
 
     private final MatchService matchService;
 
-//    @ResponseBody
-//    @GetMapping("/non/list/{startStation}/{finishStation}")
-//    public BaseResponse<List<MatchDto.GetNonMatch>> getNonMatchList(@PathVariable Long startStation, @PathVariable Long finishStation) throws BaseException {
-//        try {
-//            List<MatchDto.GetNonMatch> getMatchNonList = matchService.getNonMatchList(startStation, finishStation);
-//            return new BaseResponse<>(getMatchNonList);
-//        }catch (Exception e) {
-//            return new BaseResponse<>(null);
-//        }
-//    }
-//
+    @ApiOperation(value="매칭 신청 대기 목록 전체 조회", notes="비장애인의 매칭 신청 대기 목록을 조회합니다")
+    @GetMapping("/non/{startStation}/{finishStation}")
+    public ResponseEntity<ResponseDto<List<MatchDto.GetAllNonMatch>>> getAllNonMatch(@PathVariable Long startStation, @PathVariable Long finishStation) {
+            return ResponseEntity.ok(ResponseDto.create(MatchConstants.EMatchResponseMessage.GET_ALL_NON_MATCH_SUCCESS.getMessage(), this.matchService.getAllNonMatchByStation(startStation, finishStation)));
+    }
+
     // matchController에 대한 test document 생성(서버 구현용)
     @GetMapping(value = "/test")
     public void test() {
         matchService.test();
     }
 
-//    @ResponseBody
-//    @GetMapping("/non/{_id}")
-//    public BaseResponse<MatchDto.GetNonMatchInfo> getNonMatchData(@PathVariable Long _id) throws BaseException{
-//        try{
-//            MatchDto.GetNonMatchInfo getNonMatchInfo = matchService.getNonMatchInfo(_id);
-//            return new BaseResponse<>(getNonMatchInfo);
-//        }catch (Exception e) {
-//            return new BaseResponse<>(null);
-//        }
-//    }
+    @ApiOperation(value="매칭 신청 대기 목록 개별 조회", notes="비장애인의 매칭 신청 대기 목록을 개별 조회합니다")
+    @GetMapping("/non/{_id}")
+    public ResponseEntity<ResponseDto<MatchDto.GetNonMatch>> getNonMatch(@PathVariable String _id) {
+        return ResponseEntity.ok(ResponseDto.create(MatchConstants.EMatchResponseMessage.GET_NON_MATCH_SUCCESS.getMessage(), this.matchService.getNonMatchByID(_id)));
+
+    }
 
     @ApiOperation(value="매칭 신청 목록 전체 조회", notes="장애인의 매칭 신청 목록을 조회합니다")
     @GetMapping("/{handicappedId}")

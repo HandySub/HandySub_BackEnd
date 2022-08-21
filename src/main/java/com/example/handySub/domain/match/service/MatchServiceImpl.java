@@ -55,6 +55,54 @@ public class MatchServiceImpl implements MatchService {
         matchCollections.setStartStation(1L);
         matchCollections.setFinishStation(2L);
         matchRepository.save(matchCollections);
-}
+    }
 
+    @Override
+    public List<MatchDto.GetAllNonMatch> getAllNonMatchByStation(Long startStation, Long finishStation) {
+        List<MatchCollections> matchCollectionsList = new ArrayList<MatchCollections>();
+        if (startStation.equals(0L) & finishStation.equals(0L)){
+            List<MatchCollections> temp = matchRepository.findAll();
+            for(MatchCollections i : temp){
+                matchCollectionsList.add(i);
+            }
+        } else if(startStation.equals(0L)){
+            List<MatchCollections> temp = matchRepository.findAllByFinishStation(finishStation);
+            for(MatchCollections i : temp){
+                matchCollectionsList.add(i);
+            }
+        } else if(finishStation.equals(0L)){
+            List<MatchCollections> temp = matchRepository.findAllByStartStation(startStation);
+            for(MatchCollections i : temp){
+                matchCollectionsList.add(i);
+            }
+        } else{
+            List<MatchCollections> temp = matchRepository.findAllByStartStation(startStation);
+            for(MatchCollections i : temp){
+                Long finish = i.getFinishStation();
+                if (finish.equals(finishStation)){
+                    matchCollectionsList.add(i);
+                }
+            }
+        }
+        List<MatchDto.GetAllNonMatch> getNonMatchList = new ArrayList<>();
+        for(MatchCollections i : matchCollectionsList){
+            MatchDto.GetAllNonMatch getNonMatch = new MatchDto.GetAllNonMatch();
+            getNonMatch.set_id(i.get_id());
+            getNonMatch.setStartStation(i.getStartStation());
+            getNonMatch.setFinishStation(i.getFinishStation());
+            getNonMatchList.add(getNonMatch);
+        }
+        return getNonMatchList;
+    }
+
+    @Override
+    public MatchDto.GetNonMatch getNonMatchByID(String _id) {
+        MatchCollections matchCollections = matchRepository.findBy_id(_id);
+        MatchDto.GetNonMatch getNonMatchInfo = new MatchDto.GetNonMatch();
+        getNonMatchInfo.set_id(matchCollections.get_id());
+        getNonMatchInfo.setStartStation(matchCollections.getStartStation());
+        getNonMatchInfo.setFinishStation(matchCollections.getFinishStation());
+        getNonMatchInfo.setNickname("test"); // 추후 변경
+        return getNonMatchInfo;
+    }
 }
