@@ -70,26 +70,26 @@ public class MatchServiceImpl implements MatchService {
     @Override
     public List<MatchDto.GetAllNonMatch> getAllNonMatchByStation(Long startStation, Long finishStation) {
         List<MatchCollections> matchCollectionsList = new ArrayList<MatchCollections>();
+        List<MatchCollections> temp = matchRepository.findAll();
         if (startStation.equals(0L) & finishStation.equals(0L)){
-            List<MatchCollections> temp = matchRepository.findAll();
             for(MatchCollections i : temp){
                 matchCollectionsList.add(i);
             }
         } else if(startStation.equals(0L)){
-            List<MatchCollections> temp = matchRepository.findAllByFinishStation(finishStation);
-            for(MatchCollections i : temp){
-                matchCollectionsList.add(i);
+            for (MatchCollections i : temp) {
+                if (i.getFinishStation().getLine().equals(finishStation)){
+                    matchCollectionsList.add(i);
+                }
             }
         } else if(finishStation.equals(0L)){
-            List<MatchCollections> temp = matchRepository.findAllByStartStation(startStation);
-            for(MatchCollections i : temp){
-                matchCollectionsList.add(i);
+            for (MatchCollections i : temp) {
+                if (i.getStartStation().getLine().equals(startStation)){
+                    matchCollectionsList.add(i);
+                }
             }
         } else{
-            List<MatchCollections> temp = matchRepository.findAllByStartStation(startStation);
-            for(MatchCollections i : temp){
-                StationCollections finish = i.getFinishStation();
-                if (finish.equals(finishStation)){
+            for (MatchCollections i : temp){
+                if (i.getStartStation().getLine().equals(startStation) & i.getFinishStation().getLine().equals(finishStation)){
                     matchCollectionsList.add(i);
                 }
             }
