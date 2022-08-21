@@ -1,6 +1,7 @@
 package com.example.handySub.domain.match.dto;
 
 
+import com.example.handySub.domain.match.collection.StationCollections;
 import lombok.*;
 import com.example.handySub.domain.match.collection.MatchCollections;
 import com.querydsl.core.annotations.QueryProjection;
@@ -17,8 +18,8 @@ public abstract class MatchDto {
     @ApiModel(description = "비장애인의 매칭 신청 대기 목록 조회를 위한 응답 객체")
     public static class GetAllNonMatch {
         private String _id;
-        private Long startStation;
-        private Long finishStation;
+        private StationCollections startStation;
+        private StationCollections finishStation;
     }
 
     @Setter
@@ -26,8 +27,8 @@ public abstract class MatchDto {
     @ApiModel(description = "비장애인의 매칭 신청 대기 목록 개별 조회를 위한 응답 객체")
     public static class GetNonMatch {
         private String _id;
-        private Long startStation;
-        private Long finishStation;
+        private StationCollections startStation;
+        private StationCollections finishStation;
         private String nickname;
     }
 
@@ -41,11 +42,11 @@ public abstract class MatchDto {
         private Long startedAt;
         private Long finishedAt;
         private Integer requiredTime;
-        private Long startStation;
-        private Long finishStation;
+        private StationCollections startStation;
+        private StationCollections finishStation;
 
         @QueryProjection
-        public GetAllResponse(String _id, Long handicappedId, Long nonHandicappedId, Long startedAt, Long finishedAt, Integer requiredTime, Long startStation, Long finishStation){
+        public GetAllResponse(String _id, Long handicappedId, Long nonHandicappedId, Long startedAt, Long finishedAt, Integer requiredTime, StationCollections startStation, StationCollections finishStation){
             this._id=_id;
             this.handicappedId=handicappedId;
             this.nonHandicappedId=nonHandicappedId;
@@ -83,11 +84,11 @@ public abstract class MatchDto {
         private Long startedAt;
         private Long finishedAt;
         private Integer requiredTime;
-        private Long startStation;
-        private Long finishStation;
+        private StationCollections startStation;
+        private StationCollections finishStation;
 
         @QueryProjection
-        public CreateRequest(Long handicappedId, Long nonHandicappedId, Long startedAt, Long finishedAt, Integer requiredTime, Long startStation, Long finishStation){
+        public CreateRequest(Long handicappedId, Long nonHandicappedId, Long startedAt, Long finishedAt, Integer requiredTime, StationCollections startStation, StationCollections finishStation){
             this.handicappedId=handicappedId;
             this.nonHandicappedId=nonHandicappedId;
             this.startedAt=startedAt;
