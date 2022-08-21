@@ -14,9 +14,8 @@ public abstract class MatchDto {
 
     @Setter
     @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class GetNonMatch {
+    @ApiModel(description = "비장애인의 매칭 신청 대기 목록 조회를 위한 응답 객체")
+    public static class GetAllNonMatch {
         private String _id;
         private Long startStation;
         private Long finishStation;
@@ -24,9 +23,8 @@ public abstract class MatchDto {
 
     @Setter
     @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class GetNonMatchInfo {
+    @ApiModel(description = "비장애인의 매칭 신청 대기 목록 개별 조회를 위한 응답 객체")
+    public static class GetNonMatch {
         private String _id;
         private Long startStation;
         private Long finishStation;
