@@ -11,6 +11,7 @@ public interface MatchService {
     void test();
     List<MatchDto.GetAllNonMatch> getAllNonMatchByStation(Long startStation, Long finishStation);
     MatchDto.GetNonMatch getNonMatchByID(String _id);
+    void patchNonMatchApply(MatchDto.GetNonMatchApply getNonMatchApply);
 }
 
 

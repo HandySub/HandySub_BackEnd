@@ -61,6 +61,7 @@ public class MatchServiceImpl implements MatchService {
         matchCollections.setStartedAt(1L);
         matchCollections.setFinishedAt(1L);
         matchCollections.setRequiredTime(1);
+        matchCollections.setNonContents("good");
         matchCollections.setStartStation(new StationCollections("1", 3L, "충무로"));
         matchCollections.setFinishStation(new StationCollections("2", 6L, "봉화산"));
         matchRepository.save(matchCollections);
@@ -113,5 +114,15 @@ public class MatchServiceImpl implements MatchService {
         getNonMatchInfo.setFinishStation(matchCollections.getFinishStation());
         getNonMatchInfo.setNickname("test"); // 추후 변경
         return getNonMatchInfo;
+    }
+
+    @Override
+    public void patchNonMatchApply(MatchDto.GetNonMatchApply getNonMatchApply) {
+        MatchCollections matchCollections = matchRepository.findBy_id(getNonMatchApply.get_id());
+        matchCollections.setNonHandicappedId(2L); // 추후 principal로 수정
+        matchCollections.setRequiredTime(getNonMatchApply.getRequiredTime());
+        matchCollections.setNonContents(getNonMatchApply.getNonContents());
+
+        matchRepository.save(matchCollections);
     }
 }
