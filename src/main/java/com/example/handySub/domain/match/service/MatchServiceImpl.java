@@ -1,9 +1,13 @@
 package com.example.handySub.domain.match.service;
 
 import com.example.handySub.domain.match.collection.MatchCollections;
+import com.example.handySub.domain.match.collection.StationCollections;
 import com.example.handySub.domain.match.dto.MatchDto;
 import com.example.handySub.domain.match.repository.MatchRepository;
+import com.example.handySub.domain.match.repository.StationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +22,11 @@ import java.util.Map;
 public class MatchServiceImpl implements MatchService {
 
     private final MatchRepository matchRepository;
+    private final StationRepository stationRepository;
+
+    @Autowired
+    private final MongoTemplate mongoTemplate;
+
 
     @Override
     public List<MatchDto.GetAllResponse> getAllMatchByHandicappedId(Long handicappedId){
@@ -52,8 +61,8 @@ public class MatchServiceImpl implements MatchService {
         matchCollections.setStartedAt(1L);
         matchCollections.setFinishedAt(1L);
         matchCollections.setRequiredTime(1);
-        matchCollections.setStartStation(1L);
-        matchCollections.setFinishStation(2L);
+        matchCollections.setStartStation(new StationCollections("1", 3L, "충무로"));
+        matchCollections.setFinishStation(new StationCollections("2", 6L, "봉화산"));
         matchRepository.save(matchCollections);
     }
 
@@ -78,7 +87,7 @@ public class MatchServiceImpl implements MatchService {
         } else{
             List<MatchCollections> temp = matchRepository.findAllByStartStation(startStation);
             for(MatchCollections i : temp){
-                Long finish = i.getFinishStation();
+                StationCollections finish = i.getFinishStation();
                 if (finish.equals(finishStation)){
                     matchCollectionsList.add(i);
                 }
