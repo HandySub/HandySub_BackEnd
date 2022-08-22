@@ -58,18 +58,17 @@ public class MatchController {
 
     @ApiOperation(value="매칭 신청", notes="장애인이 매칭을 신청합니다.")
     @PostMapping
-    public ResponseEntity<ResponseDto> createMatch(@Valid @ModelAttribute MatchDto.GetAllResponse getAllResponse){
-        System.out.println(getAllResponse.toEntity().get_id());
-        this.matchService.createMatch(getAllResponse);
+    public ResponseEntity<ResponseDto> createMatch(@Valid @ModelAttribute MatchDto.CreateRequest createRequest){
+        this.matchService.createMatch(createRequest);
         return ResponseEntity.ok(ResponseDto.create(MatchConstants.EMatchResponseMessage.CREATE_MATCH_SUCCESS.getMessage()));
     }
 
-//    @ApiOperation(value="매칭 삭제", notes="매칭을 삭제합니다")
-//    @DeleteMapping
-//    public ResponseEntity<ResponseDto> deleteMatch(@Valid @RequestBody MatchDto.DeleteMatch deleteMatch){
-//        this.matchService.deleteMatch(deleteMatch);
-//        return ResponseEntity.ok(ResponseDto.create(MatchConstants.EMatchResponseMessage.DELETE_MATCH_SUCCESS.getMessage()));
-//    }
+    @ApiOperation(value="매칭 삭제", notes="매칭을 삭제합니다")
+    @DeleteMapping
+    public ResponseEntity<ResponseDto> deleteMatch(@PathVariable String _id){
+        this.matchService.deleteMatch(_id);
+        return ResponseEntity.ok(ResponseDto.create(MatchConstants.EMatchResponseMessage.DELETE_MATCH_SUCCESS.getMessage()));
+    }
 
 
 

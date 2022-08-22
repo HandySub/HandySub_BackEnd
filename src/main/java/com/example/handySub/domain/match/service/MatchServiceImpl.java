@@ -7,6 +7,7 @@ import com.example.handySub.domain.match.repository.MatchRepository;
 import com.example.handySub.domain.match.repository.StationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,10 +47,21 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public void createMatch(MatchDto.GetAllResponse getAllResponse){
-        MatchCollections matchCollections=getAllResponse.toEntity();
-        System.out.println(matchCollections.toString());
+    public void createMatch(MatchDto.CreateRequest createRequest){
+        MatchCollections matchCollections=createRequest.toEntity();
         matchRepository.save(matchCollections);
+    }
+
+    @Override
+    public MatchCollections deleteMatch(String _id){
+        MatchCollections matchCollections=this.validateMatchId(_id);
+        matchCollections.setDeleted(true);
+        return matchCollections;
+    }
+
+    @Override
+    public MatchCollections validateMatchId(String _id){
+        return this.matchRepository.findNotDeletedByBoardId(_id).orElseThrow();
     }
 
     @Override

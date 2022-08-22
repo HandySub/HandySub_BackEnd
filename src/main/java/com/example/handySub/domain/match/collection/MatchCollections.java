@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class MatchCollections {
 
     @Id
-    private String _id;
+    private String _id; //자동으로 증가하게 만들어야 함
     private Long handicappedId;
     private Long nonHandicappedId;
     private Long startedAt;
@@ -22,10 +22,11 @@ public class MatchCollections {
     private String nonContents;
     private StationCollections startStation;
     private StationCollections finishStation;
+    private boolean isDeleted;
 
     @Builder
-    public MatchCollections(String _id, Long handicappedId, Long nonHandicappedId, Long startedAt,
-                            Long finishedAt, Integer requiredTime, String nonContents, StationCollections startStation, StationCollections finishStation){
+    public MatchCollections(String _id, Long handicappedId, Long nonHandicappedId, Long startedAt, Long finishedAt, Integer requiredTime, String nonContents,
+                            StationCollections startStation, StationCollections finishStation, boolean isDeleted){
         this._id=_id;
         this.handicappedId = handicappedId;
         this.nonHandicappedId = nonHandicappedId;
@@ -33,7 +34,8 @@ public class MatchCollections {
         this.finishedAt = finishedAt;
         this.requiredTime = requiredTime;
         this.nonContents = nonContents;
-        this.startStation = startStation;
-        this.finishStation = finishStation;
+        this.startStation = new StationCollections(startStation.get_id(),startStation.getLine(), startStation.getName());
+        this.finishStation = new StationCollections(finishStation.get_id(),finishStation.getLine(), finishStation.getName());
+        this.isDeleted=isDeleted;
     }
 }
