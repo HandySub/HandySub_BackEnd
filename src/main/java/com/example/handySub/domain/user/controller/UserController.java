@@ -1,7 +1,7 @@
 package com.example.handySub.domain.user.controller;
 
 import com.example.handySub.domain.user.dto.UserDto;
-import com.example.handySub.domain.user.service.UserService;
+import com.example.handySub.domain.user.service.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.List;
 @Api(tags="User API")
 public class UserController {
     @Autowired
-    UserService userService;
+    UserServiceImpl userService;
     @Autowired
     MongoTemplate mongoTemplate;
     String COLLECTION_NAME = "users";
