@@ -1,30 +1,25 @@
 package com.example.handySub.domain.match.collection;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.bson.types.ObjectId;
+import lombok.*;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Id;
-import java.sql.Date;
 
-@Document(collection = "stations")
+@Document(collection = "station")
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class StationCollections {
 
     @Id
-    private ObjectId stationId;
-
-    private Integer line;
-
+    private String _id;
+    private Long line;
     private String name;
 
     @Builder
-    public StationCollections(Integer line, String name) {
+    public StationCollections(String _id, Long line, String name) {
+        this._id = _id;
         this.line = line;
         this.name = name;
     }

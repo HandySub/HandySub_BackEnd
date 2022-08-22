@@ -1,7 +1,7 @@
 package com.example.handySub.domain.match.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonGetter;
+import com.example.handySub.domain.match.collection.StationCollections;
 import lombok.*;
 import com.example.handySub.domain.match.collection.MatchCollections;
 import com.querydsl.core.annotations.QueryProjection;
@@ -10,30 +10,35 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import org.bson.types.ObjectId;
-import org.springframework.data.jpa.repository.Query;
 
 public abstract class MatchDto {
 
     @Setter
     @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class GetNonMatch {
+    @ApiModel(description = "비장애인의 매칭 신청 대기 목록 조회를 위한 응답 객체")
+    public static class GetAllNonMatch {
         private String _id;
-        private Long startStation;
-        private Long finishStation;
+        private StationCollections startStation;
+        private StationCollections finishStation;
     }
 
     @Setter
     @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class GetNonMatchInfo {
+    @ApiModel(description = "비장애인의 매칭 신청 대기 목록 개별 조회를 위한 응답 객체")
+    public static class GetNonMatch {
         private String _id;
-        private Long startStation;
-        private Long finishStation;
+        private StationCollections startStation;
+        private StationCollections finishStation;
         private String nickname;
+    }
+
+    @Setter
+    @Getter
+    @ApiModel(description = "비장애인의 매칭 신청 대기 목록 개별 신청을 위한 요청 객체")
+    public static class GetNonMatchApply {
+        private String _id;
+        private Integer requiredTime;
+        private String nonContents;
     }
 
     @Getter
@@ -46,23 +51,25 @@ public abstract class MatchDto {
         private Long startedAt;
         private Long finishedAt;
         private Integer requiredTime;
-        private Long startStation;
-        private Long finishStation;
+        private String nonContents;
+        private StationCollections startStation;
+        private StationCollections finishStation;
 
         @QueryProjection
-        public GetAllResponse(String _id, Long handicappedId, Long nonHandicappedId, Long startedAt, Long finishedAt, Integer requiredTime, Long startStation, Long finishStation){
+        public GetAllResponse(String _id, Long handicappedId, Long nonHandicappedId, Long startedAt, Long finishedAt, Integer requiredTime, String nonContents, StationCollections startStation, StationCollections finishStation){
             this._id=_id;
             this.handicappedId=handicappedId;
             this.nonHandicappedId=nonHandicappedId;
             this.startedAt=startedAt;
             this.finishedAt=finishedAt;
             this.requiredTime=requiredTime;
+            this.nonContents=nonContents;
             this.startStation=startStation;
             this.finishStation=finishStation;
         }
 
         public static GetAllResponse convertMatchToDto(MatchCollections matchCollections){
-            return new GetAllResponse(matchCollections.get_id(), matchCollections.getHandicappedId(), matchCollections.getNonHandicappedId(), matchCollections.getStartedAt(), matchCollections.getFinishedAt(), matchCollections.getRequiredTime(), matchCollections.getStartStation(),matchCollections.getFinishStation());
+            return new GetAllResponse(matchCollections.get_id(), matchCollections.getHandicappedId(), matchCollections.getNonHandicappedId(), matchCollections.getStartedAt(), matchCollections.getFinishedAt(), matchCollections.getRequiredTime(), matchCollections.getNonContents(), matchCollections.getStartStation(),matchCollections.getFinishStation());
         }
 
         public MatchCollections toEntity(){
@@ -73,6 +80,7 @@ public abstract class MatchDto {
                     .startedAt(startedAt)
                     .finishedAt(finishedAt)
                     .requiredTime(requiredTime)
+                    .nonContents(nonContents)
                     .startStation(startStation)
                     .finishStation(finishStation)
                     .build();
@@ -88,16 +96,18 @@ public abstract class MatchDto {
         private Long startedAt;
         private Long finishedAt;
         private Integer requiredTime;
-        private Long startStation;
-        private Long finishStation;
+        private String nonContents;
+        private StationCollections startStation;
+        private StationCollections finishStation;
 
         @QueryProjection
-        public CreateRequest(Long handicappedId, Long nonHandicappedId, Long startedAt, Long finishedAt, Integer requiredTime, Long startStation, Long finishStation){
+        public CreateRequest(Long handicappedId, Long nonHandicappedId, Long startedAt, Long finishedAt, Integer requiredTime, String nonContents, StationCollections startStation, StationCollections finishStation){
             this.handicappedId=handicappedId;
             this.nonHandicappedId=nonHandicappedId;
             this.startedAt=startedAt;
             this.finishedAt=finishedAt;
             this.requiredTime=requiredTime;
+            this.nonContents=nonContents;
             this.startStation=startStation;
             this.finishStation=finishStation;
         }
@@ -109,6 +119,7 @@ public abstract class MatchDto {
                     .startedAt(startedAt)
                     .finishedAt(finishedAt)
                     .requiredTime(requiredTime)
+                    .nonContents(nonContents)
                     .startStation(startStation)
                     .finishStation(finishStation)
                     .build();

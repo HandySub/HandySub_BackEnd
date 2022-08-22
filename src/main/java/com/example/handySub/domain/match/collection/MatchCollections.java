@@ -1,13 +1,8 @@
 package com.example.handySub.domain.match.collection;
 
 import lombok.*;
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.data.mongodb.core.mapping.Field;
-
-import javax.persistence.*;
-import java.sql.Date;
 
 @Getter
 @Setter
@@ -24,18 +19,20 @@ public class MatchCollections {
     private Long startedAt;
     private Long finishedAt;
     private Integer requiredTime;
-    private Long startStation;
-    private Long finishStation;
+    private String nonContents;
+    private StationCollections startStation;
+    private StationCollections finishStation;
 
     @Builder
     public MatchCollections(String _id, Long handicappedId, Long nonHandicappedId, Long startedAt,
-                            Long finishedAt, Integer requiredTime, Long startStation, Long finishStation){
+                            Long finishedAt, Integer requiredTime, String nonContents, StationCollections startStation, StationCollections finishStation){
         this._id=_id;
         this.handicappedId = handicappedId;
         this.nonHandicappedId = nonHandicappedId;
         this.startedAt = startedAt;
         this.finishedAt = finishedAt;
         this.requiredTime = requiredTime;
+        this.nonContents = nonContents;
         this.startStation = startStation;
         this.finishStation = finishStation;
     }
