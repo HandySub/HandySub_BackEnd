@@ -1,5 +1,6 @@
 package com.example.handySub.domain.match.constant;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
