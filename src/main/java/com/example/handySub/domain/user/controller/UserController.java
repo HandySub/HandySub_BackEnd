@@ -2,18 +2,13 @@ package com.example.handySub.domain.user.controller;
 
 import com.example.handySub.domain.user.dto.UserDto;
 import com.example.handySub.domain.user.service.UserService;
-import com.mongodb.client.MongoCollection;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -30,8 +25,8 @@ public class UserController {
     String COLLECTION_NAME = "users";
 
     @ApiOperation(value="회원가입",notes="회원가입합니다")
-    @PostMapping("/signUp_back")
-    public ModelAndView createUser(@ModelAttribute UserDto userDto){ //자동으로 바인딩하려면 name값이 UserDto의 인스턴스 명들과 일치해야 함.
+    @PostMapping("/signup-back")
+    public ModelAndView createUser(@ModelAttribute("mem") UserDto userDto){ //자동으로 바인딩하려면 name값이 UserDto의 인스턴스 명들과 일치해야 함.
         String msg = ""; //프론트에 보낼 팝업창 메세지
         String url = "";
         Query query = new Query(new Criteria("email").is(userDto.getEmail())); //같은 이메일 이미 있으면
@@ -51,8 +46,8 @@ public class UserController {
     }
 
     @ApiOperation(value="로그인", notes="로그인합니다")
-    @PostMapping("/login_back")
-    public ModelAndView login(String email, String pwd, HttpSession session){
+    @PostMapping("/login-back")
+    public ModelAndView login(@RequestBody String email,@RequestBody String pwd, HttpSession session){
         UserDto userDto = userService.loginCheck(email,pwd);
         String msg = ""; //프론트에 보낼 팝업창 메세지
         String url = "";
@@ -71,28 +66,28 @@ public class UserController {
     }
 
     @ApiOperation(value="로그아웃", notes="로그아웃합니다")
-    @PostMapping("/logout_back")
+    @PostMapping("/logout-back")
     public String logout(HttpSession session){
         session.invalidate(); //세션 초기화
         return "redirect:/main";
     }
 
     @ApiOperation(value="회원탈퇴", notes="회원 삭제합니다")
-    @PostMapping("/deleteuser_back")
+    @PostMapping("/deleteuser-back")
     public String deleteUser(String email){ //현재 로그인된 회원 탈퇴
         userService.userDelete(email);
         return "redirect:/main";
     }
 
     @ApiOperation(value="비밀번호 찾기", notes="비밀번호를 찾습니다")
-    @PostMapping("/findpwd_back")
+    @PostMapping("/findpwd-back")
     public String findPwd(String email){
         //비밀번호 찾는 거 이메일로 비밀번호 전송하려고 하는데 어떤가요...?
         return "/login";
     }
 
     @ApiOperation(value="장애인 유저 정보 수정", notes="info를 수정합니다")
-    @PostMapping("/updateinfo_back")
+    @PostMapping("/updateinfo-back")
     public String updateInfo(String email, String newinfo){
         //이메일로 장애인인지 확인 후 정보 수정. -> 프론트에서 장애인인 경우에만 info가 나타나야 함.
         //백에서 확인할 필요 X

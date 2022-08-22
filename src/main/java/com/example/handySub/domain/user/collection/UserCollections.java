@@ -8,7 +8,6 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
-import java.sql.Date;
 
 @Document(collection = "users")
 @Getter
