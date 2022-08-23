@@ -2,7 +2,6 @@ package com.example.handySub.domain.match.dto;
 
 
 import com.example.handySub.domain.match.collection.StationCollections;
-import com.mongodb.lang.Nullable;
 import lombok.*;
 import com.example.handySub.domain.match.collection.MatchCollections;
 import com.querydsl.core.annotations.QueryProjection;
@@ -10,7 +9,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.security.core.parameters.P;
+
 
 public abstract class MatchDto {
 
@@ -112,7 +111,7 @@ public abstract class MatchDto {
 
         public MatchCollections toEntity(){
             return MatchCollections.builder()
-                    ._id("matching") //추후 변경
+                    ._id("matchings") //추후 변경
                     .handicappedId(handicappedId)
                     .nonHandicappedId(0L)
                     .startedAt(startedAt)

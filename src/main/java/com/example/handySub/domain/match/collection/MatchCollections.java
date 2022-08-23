@@ -1,6 +1,7 @@
 package com.example.handySub.domain.match.collection;
 
 import lombok.*;
+import org.mongodb.morphia.annotations.Transient;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +12,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @ToString
 public class MatchCollections {
+
+    @Transient
+    public static final String SEQUENCE_NAME = "match_sequence";
 
     @Id
     private String _id; //자동으로 증가하게 만들어야 함
