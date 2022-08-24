@@ -7,9 +7,9 @@ import com.example.handySub.domain.match.collection.MatchCollections;
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+
 
 public abstract class MatchDto {
 
@@ -52,24 +52,17 @@ public abstract class MatchDto {
         private Long finishedAt;
         private Integer requiredTime;
         private String nonContents;
-        private StationCollections startStation;
-        private StationCollections finishStation;
-
-        @QueryProjection
-        public GetAllResponse(String _id, Long handicappedId, Long nonHandicappedId, Long startedAt, Long finishedAt, Integer requiredTime, String nonContents, StationCollections startStation, StationCollections finishStation){
-            this._id=_id;
-            this.handicappedId=handicappedId;
-            this.nonHandicappedId=nonHandicappedId;
-            this.startedAt=startedAt;
-            this.finishedAt=finishedAt;
-            this.requiredTime=requiredTime;
-            this.nonContents=nonContents;
-            this.startStation=startStation;
-            this.finishStation=finishStation;
-        }
+        private String startStationId;
+        private Long startStationLine;
+        private String startStationName;
+        private String finishStationId;
+        private Long finishStationLine;
+        private String finishStationName;
 
         public static GetAllResponse convertMatchToDto(MatchCollections matchCollections){
-            return new GetAllResponse(matchCollections.get_id(), matchCollections.getHandicappedId(), matchCollections.getNonHandicappedId(), matchCollections.getStartedAt(), matchCollections.getFinishedAt(), matchCollections.getRequiredTime(), matchCollections.getNonContents(), matchCollections.getStartStation(),matchCollections.getFinishStation());
+            return new GetAllResponse(matchCollections.get_id(), matchCollections.getHandicappedId(), matchCollections.getNonHandicappedId(), matchCollections.getStartedAt(), matchCollections.getFinishedAt(), matchCollections.getRequiredTime(), matchCollections.getNonContents(),
+                    matchCollections.getStartStation().get_id(), matchCollections.getStartStation().getLine(),matchCollections.getStartStation().getName(),
+                    matchCollections.getFinishStation().get_id(),matchCollections.getFinishStation().getLine(),matchCollections.getFinishStation().getName());
         }
 
         public MatchCollections toEntity(){
@@ -81,8 +74,8 @@ public abstract class MatchDto {
                     .finishedAt(finishedAt)
                     .requiredTime(requiredTime)
                     .nonContents(nonContents)
-                    .startStation(startStation)
-                    .finishStation(finishStation)
+                    .startStation(new StationCollections(startStationId,startStationLine,startStationName))
+                    .finishStation(new StationCollections(finishStationId,finishStationLine,finishStationName))
                     .build();
         }
     }
@@ -92,36 +85,41 @@ public abstract class MatchDto {
     @ApiModel(description="장애인의 매칭 신청 등록을 위한 요청 객체")
     public static class CreateRequest{
         private Long handicappedId;
-        private Long nonHandicappedId;
         private Long startedAt;
         private Long finishedAt;
-        private Integer requiredTime;
-        private String nonContents;
-        private StationCollections startStation;
-        private StationCollections finishStation;
+        private String startStationId;
+        private Long startStationLine;
+        private String startStationName;
+        private String finishStationId;
+        private Long finishStationLine;
+        private String finishStationName;
 
         @QueryProjection
-        public CreateRequest(Long handicappedId, Long nonHandicappedId, Long startedAt, Long finishedAt, Integer requiredTime, String nonContents, StationCollections startStation, StationCollections finishStation){
+        public CreateRequest(Long handicappedId, Long startedAt, Long finishedAt,
+                             String startStationId, Long startStationLine, String startStationName,
+                             String finishtStationId, Long finishStationLine, String finishStationName){
             this.handicappedId=handicappedId;
-            this.nonHandicappedId=nonHandicappedId;
             this.startedAt=startedAt;
             this.finishedAt=finishedAt;
-            this.requiredTime=requiredTime;
-            this.nonContents=nonContents;
-            this.startStation=startStation;
-            this.finishStation=finishStation;
+            this.startStationId=startStationId;
+            this.startStationLine=startStationLine;
+            this.startStationName=startStationName;
+            this.finishStationId=finishtStationId;
+            this.finishStationLine=finishStationLine;
+            this.finishStationName=finishStationName;
         }
 
         public MatchCollections toEntity(){
             return MatchCollections.builder()
+                    ._id("matchings") //추후 변경
                     .handicappedId(handicappedId)
-                    .nonHandicappedId(nonHandicappedId)
+                    .nonHandicappedId(0L)
                     .startedAt(startedAt)
                     .finishedAt(finishedAt)
-                    .requiredTime(requiredTime)
-                    .nonContents(nonContents)
-                    .startStation(startStation)
-                    .finishStation(finishStation)
+                    .requiredTime(0)
+                    .nonContents("내용이 비어있습니다")
+                    .startStation(new StationCollections(startStationId,startStationLine,startStationName))
+                    .finishStation(new StationCollections(finishStationId,finishStationLine,finishStationName))
                     .build();
         }
     }

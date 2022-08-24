@@ -5,9 +5,9 @@ import com.example.handySub.domain.match.collection.StationCollections;
 import com.example.handySub.domain.match.dto.MatchDto;
 import com.example.handySub.domain.match.repository.MatchRepository;
 import com.example.handySub.domain.match.repository.StationRepository;
+import com.example.handySub.domain.sequence.service.SequenceGeneratorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +25,7 @@ public class MatchServiceImpl implements MatchService {
     private final StationRepository stationRepository;
 
     @Autowired
-    private final MongoTemplate mongoTemplate;
+    private SequenceGeneratorService sequenceGeneratorService;
 
 
     @Override
@@ -46,23 +46,35 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public void createMatch(MatchDto.GetAllResponse getAllResponse){
-        MatchCollections matchCollections=getAllResponse.toEntity();
-        System.out.println(matchCollections.toString());
+    public void createMatch(MatchDto.CreateRequest createRequest){
+        MatchCollections matchCollections=createRequest.toEntity();
         matchRepository.save(matchCollections);
+    }
+
+    @Override
+    public MatchCollections deleteMatch(String _id){
+        MatchCollections matchCollections=this.validateMatchId(_id);
+        matchCollections.setDeleted(true);
+        return matchCollections;
+    }
+
+    @Override
+    public MatchCollections validateMatchId(String _id){
+        return this.matchRepository.findNotDeletedByBoardId(_id).orElseThrow();
     }
 
     @Override
     public void test(){
         MatchCollections matchCollections = new MatchCollections();
-        matchCollections.set_id("ss");
+        Long temp = sequenceGeneratorService.generateSequence(matchCollections.SEQUENCE_NAME);
+        matchCollections.set_id(Long.toString(temp));
         matchCollections.setHandicappedId(1L);
         matchCollections.setNonHandicappedId(2L);
         matchCollections.setStartedAt(1L);
         matchCollections.setFinishedAt(1L);
         matchCollections.setRequiredTime(1);
         matchCollections.setNonContents("good");
-        matchCollections.setStartStation(new StationCollections("1", 3L, "충무로"));
+        matchCollections.setStartStation(new StationCollections("2", 3L, "충무로"));
         matchCollections.setFinishStation(new StationCollections("2", 6L, "봉화산"));
         matchRepository.save(matchCollections);
     }
