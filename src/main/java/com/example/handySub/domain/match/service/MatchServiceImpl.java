@@ -74,8 +74,8 @@ public class MatchServiceImpl implements MatchService {
         matchCollections.setFinishedAt(1L);
         matchCollections.setRequiredTime(1);
         matchCollections.setNonContents("good");
-        matchCollections.setStartStation(new StationCollections("2", 3L, "충무로"));
-        matchCollections.setFinishStation(new StationCollections("2", 6L, "봉화산"));
+        matchCollections.setStartStation(new StationCollections(3L, "충무로"));
+        matchCollections.setFinishStation(new StationCollections(6L, "봉화산"));
         matchRepository.save(matchCollections);
     }
 
