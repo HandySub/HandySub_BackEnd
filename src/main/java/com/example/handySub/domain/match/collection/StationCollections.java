@@ -13,14 +13,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @ToString
 public class StationCollections {
 
-    @Id
-    private String _id;
     private Long line;
     private String name;
 
     @Builder
-    public StationCollections(String _id, Long line, String name) {
-        this._id = _id;
+    public StationCollections(Long line, String name) {
         this.line = line;
         this.name = name;
     }

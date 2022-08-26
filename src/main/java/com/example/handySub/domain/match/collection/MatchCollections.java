@@ -38,8 +38,8 @@ public class MatchCollections {
         this.finishedAt = finishedAt;
         this.requiredTime = requiredTime;
         this.nonContents = nonContents;
-        this.startStation = new StationCollections(startStation.get_id(),startStation.getLine(), startStation.getName());
-        this.finishStation = new StationCollections(finishStation.get_id(),finishStation.getLine(), finishStation.getName());
+        this.startStation = new StationCollections(startStation.getLine(), startStation.getName());
+        this.finishStation = new StationCollections(finishStation.getLine(), finishStation.getName());
         this.isDeleted=isDeleted;
     }
 }
