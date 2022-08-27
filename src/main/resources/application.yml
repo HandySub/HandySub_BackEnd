@@ -1,0 +1,37 @@
+spring:
+  data:
+    mongodb:
+      authentication-database: ENC(zlwG4eM40yXaI7gO/9HttA==)
+      username: ENC(gdBJJPSzAX3e9grrjhFtQA==)
+      password: ENC(gdBJJPSzAX3e9grrjhFtQA==)
+      host: localhost
+      port: 27017
+      database: ENC(iq++25vt3WMC+gQZl8XjliFxH3PmlkIT)
+
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+
+    hiddenmethod:
+      filter:
+        enabled: true
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        #        show_sql: true
+        format_sql: true
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+
+logging:
+  level:
+    org:
+      hibernate.SQL: debug
+      hibernate.type: trace
+server:
+  port: 8080
