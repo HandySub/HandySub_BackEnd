@@ -1,5 +1,6 @@
 package com.example.handySub.domain.user.controller;
 
+import com.example.handySub.domain.user.collection.UserCollections;
 import com.example.handySub.domain.user.dto.UserDto;
 import com.example.handySub.domain.user.service.UserServiceImpl;
 import io.swagger.annotations.Api;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,11 +24,12 @@ public class UserController {
     UserServiceImpl userService;
     @Autowired
     MongoTemplate mongoTemplate;
+
     String COLLECTION_NAME = "users";
 
     @ApiOperation(value="회원가입",notes="회원가입합니다")
     @PostMapping("/signup-back")
-    public ModelAndView createUser(@ModelAttribute("mem") UserDto userDto){ //자동으로 바인딩하려면 name값이 UserDto의 인스턴스 명들과 일치해야 함.
+    public ModelAndView createUser(@Valid @ModelAttribute UserDto userDto){ //자동으로 바인딩하려면 name값이 UserDto의 인스턴스 명들과 일치해야 함.
         String msg = ""; //프론트에 보낼 팝업창 메세지
         String url = "";
         Query query = new Query(new Criteria("email").is(userDto.getEmail())); //같은 이메일 이미 있으면

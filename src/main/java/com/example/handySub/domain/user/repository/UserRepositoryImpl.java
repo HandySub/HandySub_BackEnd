@@ -1,5 +1,6 @@
 package com.example.handySub.domain.user.repository;
 
+import com.example.handySub.domain.user.collection.UserCollections;
 import com.example.handySub.domain.user.dto.UserDto;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -14,11 +15,16 @@ import java.util.List;
 public class UserRepositoryImpl implements UserRepository { // -->  public class UserRepositoryImpl implements JpaRepository<User, String>
     @Autowired
     MongoTemplate mongoTemplate;
+
+    @Autowired
+    private UserCollectionRepo userCollectionRepo;
+
     String COLLECTION_NAME = "users"; //컬렉션(테이블) 이름 : user
 
     @Override
     public void userInsert(UserDto userDto){
-        mongoTemplate.insert(userDto, COLLECTION_NAME);
+        UserCollections entity = userDto.toEntity();
+        userCollectionRepo.save(entity);
     }
 
     @Override
