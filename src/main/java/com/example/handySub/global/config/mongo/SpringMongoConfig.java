@@ -1,4 +1,4 @@
-package com.example.handySub.domain.mongodb;
+package com.example.handySub.global.config.mongo;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

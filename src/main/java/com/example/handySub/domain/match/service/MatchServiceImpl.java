@@ -1,16 +1,19 @@
 package com.example.handySub.domain.match.service;
 
 import com.example.handySub.domain.match.collection.MatchCollections;
+import com.example.handySub.domain.match.collection.ReviewCollections;
 import com.example.handySub.domain.match.collection.StationCollections;
 import com.example.handySub.domain.match.dto.MatchDto;
 import com.example.handySub.domain.match.repository.MatchRepository;
 import com.example.handySub.domain.match.repository.StationRepository;
-import com.example.handySub.domain.sequence.service.SequenceGeneratorService;
+import com.example.handySub.global.sequence.service.SequenceGeneratorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +32,7 @@ public class MatchServiceImpl implements MatchService {
 
 
     @Override
-    public List<MatchDto.GetAllResponse> getAllMatchByHandicappedId(Long handicappedId){
+    public List<MatchDto.GetAllResponse> getAllMatchByHandicappedId(String handicappedId){
         List<MatchCollections> allMatchByHandicappedId=this.matchRepository.findAllByHandicappedId(handicappedId);
         return this.convertNestedStructure(allMatchByHandicappedId);
     }
@@ -40,7 +43,8 @@ public class MatchServiceImpl implements MatchService {
         Map<String, MatchDto.GetAllResponse> map = new HashMap<>();
         matches.stream().forEach(c -> {
             MatchDto.GetAllResponse getResponse = MatchDto.GetAllResponse.convertMatchToDto(c);
-            map.put(getResponse.get_id(), getResponse);
+            map.put(getResponse.getMatchId(), getResponse);
+            result.add(getResponse);
         });
         return result;
     }
@@ -48,34 +52,51 @@ public class MatchServiceImpl implements MatchService {
     @Override
     public void createMatch(MatchDto.CreateRequest createRequest){
         MatchCollections matchCollections=createRequest.toEntity();
+        System.out.println(matchCollections.toString());
+        Long temp = sequenceGeneratorService.generateSequence(matchCollections.SEQUENCE_NAME);
+        matchCollections.setMatchId(Long.toString(temp));
+        System.out.println(matchCollections.toString());
         matchRepository.save(matchCollections);
     }
 
     @Override
-    public MatchCollections deleteMatch(String _id){
-        MatchCollections matchCollections=this.validateMatchId(_id);
-        matchCollections.setDeleted(true);
-        return matchCollections;
+    public void getResultMatch(MatchDto.EnterMatch enterMatch){
+        MatchCollections matchCollections=matchRepository.findByMatchId(enterMatch.getMatchId());
+        matchCollections.setMatchingStatus(enterMatch.getMatchingStatus());
+        matchRepository.save(matchCollections);
     }
 
     @Override
-    public MatchCollections validateMatchId(String _id){
-        return this.matchRepository.findNotDeletedByBoardId(_id).orElseThrow();
+    public void createReview(MatchDto.RequestReview requestReview){
+        MatchCollections matchCollections=matchRepository.findByMatchId(requestReview.getMatchId());
+        matchCollections.setMyReview(new ReviewCollections(requestReview.getCookies(), requestReview.getComment(),requestReview.getCreatedAt()));
+        matchRepository.save(matchCollections);
     }
+
+    @Override
+    public void deleteMatch(String matchId){
+        MatchCollections matchCollections=matchRepository.findByMatchId(matchId);
+        matchCollections.setDeleted(true);
+        matchRepository.save(matchCollections);
+    }
+
+//    @Override
+//    public MatchCollections validateMatchId(String matchId){
+//        return this.matchRepository.findNotDeletedByBoardId(matchId).orElseThrow();
+//    }
 
     @Override
     public void test(){
         MatchCollections matchCollections = new MatchCollections();
         Long temp = sequenceGeneratorService.generateSequence(matchCollections.SEQUENCE_NAME);
-        matchCollections.set_id(Long.toString(temp));
-        matchCollections.setHandicappedId(1L);
-        matchCollections.setNonHandicappedId(2L);
-        matchCollections.setStartedAt(1L);
-        matchCollections.setFinishedAt(1L);
-        matchCollections.setRequiredTime(1);
+        matchCollections.setMatchId(Long.toString(temp));
+        matchCollections.setStartedAt(0L);
+        matchCollections.setFinishedAt(0L);
+        matchCollections.setRequiredTime(10);
         matchCollections.setNonContents("good");
         matchCollections.setStartStation(new StationCollections(3L, "충무로"));
         matchCollections.setFinishStation(new StationCollections(6L, "봉화산"));
+        System.out.println(matchCollections.toString());
         matchRepository.save(matchCollections);
     }
 
@@ -109,7 +130,7 @@ public class MatchServiceImpl implements MatchService {
         List<MatchDto.GetAllNonMatch> getNonMatchList = new ArrayList<>();
         for(MatchCollections i : matchCollectionsList){
             MatchDto.GetAllNonMatch getNonMatch = new MatchDto.GetAllNonMatch();
-            getNonMatch.set_id(i.get_id());
+            getNonMatch.setMatchId(i.getMatchId());
             getNonMatch.setStartStation(i.getStartStation());
             getNonMatch.setFinishStation(i.getFinishStation());
             getNonMatchList.add(getNonMatch);
@@ -118,10 +139,10 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public MatchDto.GetNonMatch getNonMatchByID(String _id) {
-        MatchCollections matchCollections = matchRepository.findBy_id(_id);
+    public MatchDto.GetNonMatch getNonMatchByID(String matchId) {
+        MatchCollections matchCollections = matchRepository.findByMatchId(matchId);
         MatchDto.GetNonMatch getNonMatchInfo = new MatchDto.GetNonMatch();
-        getNonMatchInfo.set_id(matchCollections.get_id());
+        getNonMatchInfo.setMatchId(matchCollections.getMatchId());
         getNonMatchInfo.setStartStation(matchCollections.getStartStation());
         getNonMatchInfo.setFinishStation(matchCollections.getFinishStation());
         getNonMatchInfo.setNickname("test"); // 추후 변경
@@ -130,8 +151,8 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public void patchNonMatchApply(MatchDto.GetNonMatchApply getNonMatchApply) {
-        MatchCollections matchCollections = matchRepository.findBy_id(getNonMatchApply.get_id());
-        matchCollections.setNonHandicappedId(2L); // 추후 principal로 수정
+        MatchCollections matchCollections = matchRepository.findByMatchId(getNonMatchApply.getMatchId());
+        matchCollections.setNonHandicappedId("principal"); // 추후 principal로 수정
         matchCollections.setRequiredTime(getNonMatchApply.getRequiredTime());
         matchCollections.setNonContents(getNonMatchApply.getNonContents());
 

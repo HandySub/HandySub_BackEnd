@@ -1,15 +1,13 @@
 //토큰 생성
 //토큰으로부터 정보 추출(해석)
 //토큰의 유효성 검사
-package com.example.handySub.domain.jwt;
+package com.example.handySub.global.jwt;
 
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;

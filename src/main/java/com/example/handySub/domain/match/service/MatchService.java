@@ -7,14 +7,15 @@ import java.util.List;
 
 public interface MatchService {
 
-    List<MatchDto.GetAllResponse> getAllMatchByHandicappedId(Long handicappedId);
+    List<MatchDto.GetAllResponse> getAllMatchByHandicappedId(String handicappedId);
     void createMatch(MatchDto.CreateRequest createRequest);
     void test();
     List<MatchDto.GetAllNonMatch> getAllNonMatchByStation(Long startStation, Long finishStation);
-    MatchDto.GetNonMatch getNonMatchByID(String _id);
+    MatchDto.GetNonMatch getNonMatchByID(String matchId);
     void patchNonMatchApply(MatchDto.GetNonMatchApply getNonMatchApply);
-    MatchCollections deleteMatch(String _id);
-    MatchCollections validateMatchId(String _id);
+    void deleteMatch(String matchId);
+    void getResultMatch(MatchDto.EnterMatch enterMatch);
+    void createReview(MatchDto.RequestReview requestReview);
 }
 
 

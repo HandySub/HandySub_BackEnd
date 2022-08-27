@@ -1,4 +1,4 @@
-package com.example.handySub.domain.jwt;
+package com.example.handySub.global.jwt;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

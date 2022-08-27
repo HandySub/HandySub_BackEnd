@@ -1,6 +1,6 @@
-package com.example.handySub.domain.sequence.service;
+package com.example.handySub.global.sequence.service;
 
-import com.example.handySub.domain.sequence.collection.SequenceCollections;
+import com.example.handySub.global.sequence.collection.SequenceCollections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -21,7 +21,7 @@ public class SequenceGeneratorService {
     private MongoOperations mongoOperations;
 
     public Long generateSequence(String seqName) {
-        Query query = new Query(Criteria.where("_id").is(seqName));
+        Query query = new Query(Criteria.where("matchId").is(seqName));
         Update update = new Update().inc("seq", 1);
         SequenceCollections counter = mongoOperations
                 .findAndModify(query, update, options().returnNew(true).upsert(true), SequenceCollections.class);

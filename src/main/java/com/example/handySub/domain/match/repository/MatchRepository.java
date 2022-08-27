@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MatchRepository extends MongoRepository<MatchCollections, String>, MatchRepositoryCustom{
+public interface MatchRepository extends MongoRepository<MatchCollections, String>{
     List<MatchCollections> findAllByStartStation(StationCollections startStation);
     List<MatchCollections> findAllByFinishStation(StationCollections finishStation);
-    MatchCollections findBy_id(String _id);
-    List<MatchCollections> findAllByHandicappedId(Long handicappedId);
+    MatchCollections findByMatchId(String matchId);
+    List<MatchCollections> findAllByHandicappedId(String handicappedId);
 }
