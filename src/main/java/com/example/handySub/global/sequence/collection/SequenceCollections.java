@@ -1,4 +1,4 @@
-package com.example.handySub.domain.sequence.collection;
+package com.example.handySub.global.sequence.collection;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class SequenceCollections {
 
     @Id
-    private String _id;
+    private String matchId;
     private Long seq;
 }

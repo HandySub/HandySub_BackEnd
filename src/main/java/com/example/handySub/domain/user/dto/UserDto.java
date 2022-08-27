@@ -1,9 +1,7 @@
 package com.example.handySub.domain.user.dto;
 
-import com.example.handySub.domain.sequence.service.SequenceGeneratorService;
 import com.example.handySub.domain.user.collection.UserCollections;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Data
 public class UserDto {
