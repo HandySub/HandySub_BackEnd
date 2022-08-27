@@ -1,5 +1,6 @@
 package com.example.handySub.domain.user.service;
 
+import com.example.handySub.domain.user.collection.UserCollections;
 import com.example.handySub.domain.user.dto.UserDto;
 import com.example.handySub.domain.user.repository.UserRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
