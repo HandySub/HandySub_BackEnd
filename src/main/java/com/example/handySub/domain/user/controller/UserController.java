@@ -1,5 +1,6 @@
 package com.example.handySub.domain.user.controller;
 
+import com.example.handySub.domain.jwt.JwtUtil;
 import com.example.handySub.domain.user.collection.UserCollections;
 import com.example.handySub.domain.user.dto.UserDto;
 import com.example.handySub.domain.user.service.UserServiceImpl;
@@ -11,15 +12,16 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/user")
 @Api(tags="User API")
 public class UserController {
+
     @Autowired
     UserServiceImpl userService;
     @Autowired
