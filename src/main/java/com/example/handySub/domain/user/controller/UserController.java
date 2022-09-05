@@ -1,7 +1,5 @@
 package com.example.handySub.domain.user.controller;
 
-import com.example.handySub.domain.jwt.JwtUtil;
-import com.example.handySub.domain.user.collection.UserCollections;
 import com.example.handySub.domain.user.dto.UserDto;
 import com.example.handySub.domain.user.service.UserServiceImpl;
 import io.swagger.annotations.Api;

@@ -34,6 +34,8 @@ dependencies {
 	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
 	implementation "com.querydsl:querydsl-mongodb:${queryDslVersion}"
 	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
 	implementation 'org.mongodb:mongo-java-driver:3.12.8'
