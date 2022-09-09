@@ -1,10 +1,15 @@
 package com.example.handySub.domain.user.repository;
 
-import com.example.handySub.domain.user.dto.UserDto;
+import com.example.handySub.domain.user.collection.UserCollections;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepository {
-    void userInsert(UserDto userDto); //유저 등록
-    void userInfoUpdate(String email, String newinfo); //유저 정보 수정
-    void userDelete(String email); //유저 삭제
-    UserDto loginCheck(String email, String pwd);
+import javax.transaction.Transactional;
+
+@Repository
+public interface UserRepository extends MongoRepository<UserCollections, String> {
+  boolean existsByNickname(String nickname);
+  UserCollections findByNickname(String nickname);
+  void deleteByNickname(String nickname);
+
 }
